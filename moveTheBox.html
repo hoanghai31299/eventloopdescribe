@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Move The Box</title>
+  </head>
+  <style>
+    body {
+      background: linear-gradient(
+        180deg,
+        rgba(145, 48, 88, 1) 0%,
+        rgba(16, 18, 54, 1) 100%
+      );
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+    }
+    .raf,
+    .setTimeout {
+      width: 200px;
+      height: 200px;
+      background-color: #ccc;
+      top: 50px;
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .setTimeout {
+      top: 300px;
+    }
+    .animation {
+      position: relative;
+      height: 600px;
+    }
+    img {
+      width: 49%;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <div class="animation">
+        <div class="raf" style="left: 0">rAF()</div>
+        <div class="setTimeout" style="left: 0">SetTimeout()</div>
+      </div>
+      <div class="images">
+        <img src="Screenshot_1.png" alt="" />
+        <img src="Screenshot_2.png" alt="" />
+      </div>
+    </div>
+    <script>
+      //get raf and setTimeout element using const
+      const raf = document.querySelector('.raf');
+      const setTimeoutEl = document.querySelector('.setTimeout');
+      //function to get width of screen
+      function getWidth() {
+        return Math.max(
+          document.body.scrollWidth,
+          document.documentElement.scrollWidth,
+          document.body.offsetWidth,
+          document.documentElement.offsetWidth,
+          document.documentElement.clientWidth
+        );
+      }
+      const maxWidth = getWidth();
+      //animate raf element move forward
+      function moveForward() {
+        raf.style.left = parseInt(raf.style.left) + 1 + 'px';
+        if (parseInt(raf.style.left) >= maxWidth) {
+          raf.style.left = '0';
+        }
+        requestAnimationFrame(moveForward);
+      }
+
+      function moveForwardSetTimeout() {
+        setTimeoutEl.style.left = parseInt(setTimeoutEl.style.left) + 1 + 'px';
+        if (parseInt(setTimeoutEl.style.left) >= maxWidth) {
+          setTimeoutEl.style.left = '0';
+        }
+        setTimeout(moveForwardSetTimeout);
+      }
+      let triggered = false;
+      const trigger = document.addEventListener('click', () => {
+        if (triggered) return;
+        triggered = true;
+        moveForward();
+        moveForwardSetTimeout();
+      });
+    </script>
+  </body>
+</html>
